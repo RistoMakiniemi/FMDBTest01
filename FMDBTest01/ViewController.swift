@@ -25,6 +25,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var status: UILabel!
     
+    @IBOutlet weak var status2: UILabel!
+    
     @IBAction func SAVEaction(_ sender: UIButton) {
         
         if FileManager.default.fileExists(atPath: dbpath) {
@@ -34,7 +36,7 @@ class ViewController: UIViewController {
             
             // connection to DB must ber opened
             if( connectionFMDB.open()) {
-                let sqlstatement = "insert or ignore into person (firstname, familyname, phone) values ('\(self.firstname.text!)','\(self.familyname.text!)','\(self.phone.text!)');"
+                let sqlstatement = "insert into person (firstname, familyname, phone) values ('\(self.firstname.text!)','\(self.familyname.text!)','\(self.phone.text!)');"
                 
                 NSLog(sqlstatement)
                 
@@ -42,6 +44,8 @@ class ViewController: UIViewController {
                 
                 if !result {
                     self.status.text = "SAVE FAILURE!"
+                    
+                    self.status2.text = connectionFMDB.lastErrorMessage()
                     //connectionFMDB.lastError()
                     //connectionFMDB.lastErrorCode
                     //self.status.text = connectionFMDB.lastErrorMessage()
@@ -139,6 +143,13 @@ class ViewController: UIViewController {
     
     }
     
+    @IBAction func CLEARaction(_ sender: UIButton) {
+        self.firstname.text = ""
+        self.familyname.text = ""
+        self.phone.text = ""
+        self.status.text = ""
+        self.status2.text = ""
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
